@@ -1,0 +1,6 @@
+{"Goods": [
+	{"Id": "corn","Name": "Кукуруза","PicAdress": "SprCorn","Price": 4},
+	{"Id": "butter","Name": "Масло","PicAdress": "SprButter","Price": 46},
+	{"Id": "mushrooms","Name": "Грибы","PicAdress": "SprMushrooms","Price": 18},
+	{"Id": "wheat","Name": "Пшеница","PicAdress": "SprWheat","Price": 5}
+] }
