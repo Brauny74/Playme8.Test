@@ -23,10 +23,12 @@ public class UIOffersContent : MonoBehaviour
 
     private Vector2 targetPos;
     private bool isMoving = false;
+    private bool isButtonPressed;
 
     private void Start()
     {
-        startContentPos = ContentTransform.anchoredPosition;//получаем самую левую (стартовую) позицию контента
+        startContentPos = ContentTransform.anchoredPosition;//получаем самую левую (стартовую) позицию контента\
+        isButtonPressed = false;
     }
 
     /// <summary>
@@ -56,21 +58,29 @@ public class UIOffersContent : MonoBehaviour
     {
         if (isMoving)//двигаем контент, если игрок нажал кнопку и мы ещё не дошли до нужной позиции
         {
-            //если игрок пытается сдвинуть контент во время движения, прекращаем автоматическое движение
-            if (Input.touchCount > 0 || Input.GetMouseButtonDown(0))
+            if (Mathf.Abs(targetPos.x - ContentTransform.anchoredPosition.x) < 0.001f)
             {
                 isMoving = false;
                 return;
             }
-            if (Mathf.Abs(targetPos.x - ContentTransform.anchoredPosition.x) < 0.001f)
-            {
-                if (Mathf.Abs(startContentPos.x - ContentTransform.anchoredPosition.x) < 0.001f)
-                {
-                    isMoving = false;
-                    return;
-                }
-            }
             ContentTransform.anchoredPosition = Vector2.MoveTowards(ContentTransform.anchoredPosition, targetPos, MovingSpeed * Time.deltaTime);
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (isButtonPressed)
+        {
+            if (Input.touchCount <= 0 || Input.GetMouseButtonUp(0))
+            {
+                isButtonPressed = false;
+            }
+        } else 
+        {
+            if (Input.touchCount > 0 || Input.GetMouseButtonDown(0))
+            {
+                isMoving = false;
+            }
         }
     }
 
@@ -86,5 +96,6 @@ public class UIOffersContent : MonoBehaviour
         newX = newX < finishContentPos.x ? finishContentPos.x : newX;
         targetPos = new Vector2(newX, ContentTransform.anchoredPosition.y);
         isMoving = true;
+        isButtonPressed = true;
     }
 }
